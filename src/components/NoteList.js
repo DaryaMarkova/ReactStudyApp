@@ -1,21 +1,27 @@
 import React from 'react';
 import classNames from 'classnames';
+import { DateTime } from 'luxon';
 
 export function NoteList(props) {
+    const comparator = (item1, item2) => item2.datetime.valueOf() - item1.datetime.valueOf();
+
     return (
         <React.Fragment>
-            <div className={classNames('note py-2 pl-2')}>
-                <div><b>{'2020/30/08 10:37:45'}</b></div>
-                <div>{'New note 3'} </div>
-            </div>
-            <div className={classNames('note py-2 pl-2')}>
-                <div><b>{'2020/30/08 10:36:41'}</b></div>
-                <div>{'New note 2'} </div>
-            </div>
-            <div className={classNames('note py-2 pl-2')}>
-                <div><b>{'2020/30/08 10:35:43'}</b></div>
-                <div>{'New note 1'} </div>
-            </div>
+            {
+                props.items.sort(comparator).map((item, index) => {
+                    const lastUpdate = item.datetime.toLocaleString(DateTime.DATETIME_SHORT_WITH_SECONDS);
+
+                    return (
+                        <div
+                            key={index}
+                            className={classNames('note py-2 pl-2', {'active-note': item === props.activeNote})}
+                            onClick={() => props.onItemClicked(item)}>
+                            <div><b>{lastUpdate}</b></div>
+                            <div>{item.text.slice(0, 15).concat('...')} </div>
+                        </div>
+                    )
+                })
+            }
         </React.Fragment>
     )
 }
