@@ -30,6 +30,7 @@ function App() {
 
     const addNote = () => {
       const newNote = { text: 'New note', datetime: DateTime.local() };
+
       setNotes([...notes, newNote]);
       setActiveNote(newNote);
     };
@@ -38,13 +39,14 @@ function App() {
 
     const onNoteChanged = newNote => {
         const index = notes.indexOf(activeNote);
+
         notes[index] = newNote;
         setActiveNote(newNote);
     };
 
     return (
         <div className="container-fluid">
-            <div className="row mt-5 d-flex justify-content-center">
+            <div className="row mt-5 d-flex flex-wrap justify-content-center">
                 <div className="d-flex col-md-8">
                     <button type="button" className="btn btn-primary" onClick={addNote}>New Note</button>
                 </div>
